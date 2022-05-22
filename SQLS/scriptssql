@@ -1,0 +1,87 @@
+
+insert into LIBROS (NOMBRE_LIBRO,AUTOR_LIBRO, DESCRIPCION_LIBRO) VALUES ('QUIJOTE', 'PEPE', 'IACOBUS');
+
+insert into LIBROS (NOMBRE_LIBRO,AUTOR_LIBRO, DESCRIPCION_LIBRO) VALUES ('PERRO', 'CASA', 'CACA');
+
+
+create table libros
+(
+	ID_LIBROS serial,
+	NOMBRE_LIBRO varchar(25) NOT NULL,
+	AUTOR_LIBRO varchar(25) NOT NULL,
+	DESCRIPCION_LIBRO varchar(100) NOT NULL,
+	constraint primaria_ID_LIBROS PRIMARY KEY (ID_LIBROS)
+)
+
+Rider_id,Name,Height,Weight,Nationality,Climbing,General_Classification,Time_Trial,Sprint,One_Day_Races
+mauro-finetto,Mauro  Finetto, 1.77 m, 62 kg   ,Italy,1002Climber,1199GC,229Time trial,1787Sprint,2156One day races
+
+create table cyclists
+(
+	ID_CYCLIST varchar(50) NOT NULL,
+	RIDER_NAME varchar(50) NOT NULL,
+	WEIGHT int NOT NULL,
+	NATIONALITY varchar(50) NOT NULL,
+	General_Classification int NOT NULL,
+	Time_Trial int,
+	CLIMBING int,
+    SPRINT int,
+    ONE_DAY_RACES int,
+	CONSTRAINT ID_CYCLIST_pk PRIMARY KEY (ID_CYCLIST)
+)
+
+create table races
+(
+	ID_RACE varchar(50) NOT NULL,
+	DURATION varchar(50),
+	TYPE_OF_COMPETITION varchar(50),
+	CONSTRAINT ID_RACE_PK PRIMARY KEY (ID_RACE)
+)
+
+Race_Name,Name,Season,Age,Rank,Team_Name,UCI,Finishing_Time
+paris-roubaix,dylan-van-baarle,2022,29,1,ineos-grenadiers-2022,500,5:37:00
+
+
+create table race_results
+(
+	ID_RESULT SERIAL PRIMARY KEY,
+	ID_RACE varchar(25) NOT NULL,
+	ID_CYCLIST varchar(25) NOT NULL,
+	SEASON INT NOT NULL,
+	AGE SMALLINT,
+	Team_Name varchar(50),
+	UCI INT,
+	Finishing_Time varchar(50),
+
+	 CONSTRAINT fk_RACE_NAME
+      FOREIGN KEY(ID_RACE)
+	  REFERENCES RACES(ID_RACE),
+
+	 CONSTRAINT fk_ID_CYCLIST
+      FOREIGN KEY(ID_CYCLIST)
+	  REFERENCES cyclists(ID_CYCLIST).
+
+)
+
+CREATE TABLE rider_historic_results(
+   hitoric_id INT GENERATED ALWAYS AS IDENTITY,
+   ID_CYCLIST varchar(25) NOT NULL,
+   SEASON INT NOT NULL,
+   POINT INT,
+   RACEDAYS INT,
+   KMs_Rode INT,
+   WINS INT,
+   TOPTENS INT,
+      CONSTRAINT fk_ID_CYCLIST_HISTORIC
+      FOREIGN KEY(ID_CYCLIST)
+	  REFERENCES cyclists(ID_CYCLIST)
+);
+
+alter table cyclists add column Height decimal;
+
+
+
+
+
+Race_Name,Name,Season,Age,Rank,Team_Name,UCI,Finishing_Time
+paris-roubaix,dylan-van-baarle,2022,29,1,ineos-grenadiers-2022,500,5:37:00
