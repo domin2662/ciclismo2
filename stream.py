@@ -13,7 +13,7 @@ from streamlit_echarts import st_echarts, st_pyecharts
 
 #################LOAD INFORMATION CSV ##########################
 
-competitionsstats = pd.read_csv('BBDDcsv/LeaderBoard_Data.csv', header=0)
+competitionsstats2 = pd.read_csv('BBDDcsv/LeaderBoard_Data.csv', header=0)
 estadisticas = pd.read_csv('BBDDcsv/SeasonStats2.csv', header=0)
 
 
@@ -22,6 +22,7 @@ profiles = CyController.get_dataframe_all_cyclists()
 seasons = rcController.get_dataframe_season()
 riders_by_season = CyController.get_dataframe_all_cyclists_by_seson()
 nationalities = CyController.get_dataframe_nationality()
+competitionsstats = rcController.get_dataframe_all_race_results()
 
 
 
@@ -65,9 +66,9 @@ with col2:
     st.header(" 👨‍👨‍👦‍👦 ALL THE CYCLIST  FROM "+str(nationality).upper())
     result = CyController.get_dataframe_cyclist(str(rider))
     porcorredortemporadas = riders_by_season.loc[riders_by_season['id_cyclist'].str.contains(str(rider), case=False)]
-
-    profiles_by_nationality = profiles.loc[profiles['nationality'].str.contains(str(nationality), case=False)]
-    st.dataframe(profiles_by_nationality )
+    profiles_by_nationality = profiles
+    profiles_by_nationality = profiles_by_nationality.loc[profiles['nationality'].str.contains(str(nationality), case=False)]
+    st.dataframe(profiles_by_nationality)
     type = np.array(typeofcompetition)
     type = ['id_cyclist']
     type.extend(typeofcompetition)
@@ -75,7 +76,7 @@ with col2:
 
 #### DYNAMIC FILTER ###########
 if(len(typeofcompetition)>0):
-    filter_by_competition = profiles[type].sort_values(by=str(type[0]),ascending=False)
+    filter_by_competition = profiles[type].sort_values(by=str(type[1]),ascending=False)
     filter_by_competition  = filter_by_competition[:number_cyclist_selected_historical]
     #st.dataframe(filter_by_competition)
     #filter_by_competition = filter_by_competition.astype(str)
@@ -358,18 +359,93 @@ st.altair_chart(f, use_container_width=True)
 #st.dataframe(URLs)
 
 #Race_Name,Name,Season,Age,Rank,Team_Name,UCI,Finishing_Time
-st.header("👨‍👨‍👦‍👦 RESULTADOS HISTÓRICOS DE CLÁSICAS" )
-st.dataframe(competitionsstats)
+col1, col2 = st.columns(2)
+with col1:
+    st.header("👨‍👨‍👦‍👦 RESULTADOS HISTÓRICOS DE CLÁSICAS" )
+    st.dataframe(competitionsstats)
+with col2:
+    #FILTRAMOS EL EQUIPO -> POR AÑO
+    st.header("👨‍👨‍👦‍👦 ANÁLISIS POR EQUIPOS EN "+ str(int(season)) )
+    equipos_year = competitionsstats.loc[competitionsstats['season'] == season]
+    st.write(equipos_year)
+    equipos_year_age = equipos_year[['team_name', 'age']]
+    equipos_year_uci = equipos_year[['team_name', 'uci']]
+    equipos_year_age = equipos_year_age.groupby(['team_name']).mean()
+    equipos_year_uci = equipos_year_uci.groupby(['team_name']).sum()
 
-#FILTRAMOS EL EQUIPO -> POR AÑO
-st.header("👨‍👨‍👦‍👦 ANÁLISIS POR EQUIPOS EN "+ str(int(season)) )
-equipos_year = competitionsstats.loc[competitionsstats['Season']== season]
-st.dataframe(equipos_year)
+    frames =[equipos_year_age,equipos_year_uci]
+    teams_analyse = pd.concat(frames,keys=["index"])
+
+    #result_to_compare  = teams_analyse.rename(columns={'team_name': 'index'}).set_index('index')
+
+
+st.write("###")
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("👨‍👨‍👦‍👦 EDAD EQUIPOS " + str(int(season)))
+    st.bar_chart(equipos_year_age)
+with col2:
+    st.subheader("👨‍👨‍👦‍👦 PUNTOS UCI CLÁSICAS " + str(int(season)))
+    st.bar_chart(equipos_year_uci)
+
+st.write("###")
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("👨‍👨‍👦‍👦 EDAD EQUIPOS " + str(int(season)))
+    st.bar_chart(equipos_year_age)
+with col2:
+    teams = rcController.get_dataframe_teams(str(season))
+    team_season = rcController.get_dataframe_race_results_classics_team_season(team)
+    team_season = team_season[['id_cyclist','team_name','uci']]
+    team_by_rider = team_season.groupby(['id_cyclist']).sum()
+    st.write(team_by_rider)
+
+    st.subheader("👨‍👨‍👦‍👦 PUNTOS UCI POR CORREDOR " + str(team))
+
+    by_rider = {
+        "legend": {"top": "bottom"},
+        "toolbox": {
+            "show": True,
+            "feature": {
+                "mark": {"show": True},
+                "dataView": {"show": True, "readOnly": False},
+                "restore": {"show": True},
+                "saveAsImage": {"show": True},
+            },
+        },
+        "series": [
+            {
+                "name": "面积模式",
+                "type": "pie",
+                "radius": [50, 250],
+                "center": ["50%", "50%"],
+                "roseType": "area",
+                "itemStyle": {"borderRadius": 10},
+                "data": [
+                    {"value": 40, "name": "rose 1"},
+                    {"value": 38, "name": "rose 2"},
+                    {"value": 32, "name": "rose 3"},
+                    {"value": 30, "name": "rose 4"},
+                    {"value": 28, "name": "rose 5"},
+                    {"value": 26, "name": "rose 6"},
+                    {"value": 22, "name": "rose 7"},
+                    {"value": 18, "name": "rose 8"},
+                    {"value": 18, "name": "rose 9"},
+                    {"value": 18, "name": "rose 10"},
+                ],
+            }
+        ],
+    }
+    st_echarts(
+        options=by_rider, height="600px",
+    )
 
 #Race_Name,Name,Season,Age,Rank,Team_Name,UCI,Finishing_Time
 #paris-roubaix,dylan-van-baarle,2022,29,1,ineos-grenadiers-2022,500,5:37:00
 
-equipos_edad = equipos_year[['Team_Name','Age']]
+
 
 
 # DATAFRAME - TEAM SEASON
@@ -383,115 +459,10 @@ st.dataframe(team_by_rider.sort_values(['uci'],False))
 st.bar_chart(team_by_rider)
 
 
-
-by_rider = {
-    "legend": {"top": "bottom"},
-    "toolbox": {
-        "show": True,
-        "feature": {
-            "mark": {"show": True},
-            "dataView": {"show": True, "readOnly": False},
-            "restore": {"show": True},
-            "saveAsImage": {"show": True},
-        },
-    },
-    "series": [
-        {
-            "name": "面积模式",
-            "type": "pie",
-            "radius": [50, 250],
-            "center": ["50%", "50%"],
-            "roseType": "area",
-            "itemStyle": {"borderRadius": 10},
-            "data": [
-                {"value": 40, "name": "rose 1"},
-                {"value": 38, "name": "rose 2"},
-                {"value": 32, "name": "rose 3"},
-                {"value": 30, "name": "rose 4"},
-                {"value": 28, "name": "rose 5"},
-                {"value": 26, "name": "rose 6"},
-                {"value": 22, "name": "rose 7"},
-                {"value": 18, "name": "rose 8"},
-                {"value": 18, "name": "rose 9"},
-                {"value": 18, "name": "rose 10"},
-            ],
-        }
-    ],
-}
-st_echarts(
-    options=by_rider, height="600px",
-)
-
-
-
-# EDAD MEDIA
-equipos_edad = equipos_edad[['Team_Name']].mean()
-equipos_year = equipos_year[['Team_Name', 'UCI']]
-
 # PUNTOS EN CLÁSICAS
 equipos_puntos = equipos_year.groupby(['Team_Name']).sum()
 equipos_puntos  = equipos_puntos .sort_values('Team_Name', ascending=True, inplace=False, kind='quicksort', na_position='last', ignore_index=False, key=None)
 
 st.dataframe(equipos_puntos)
 st.bar_chart(equipos_puntos)
-
-
-
-by_rider = {
-    "legend": {"top": "bottom"},
-    "toolbox": {
-        "show": True,
-        "feature": {
-            "mark": {"show": True},
-            "dataView": {"show": True, "readOnly": False},
-            "restore": {"show": True},
-            "saveAsImage": {"show": True},
-        },
-    },
-    "series": [
-        {
-            "name": "面积模式",
-            "type": "pie",
-            "radius": [50, 250],
-            "center": ["50%", "50%"],
-            "roseType": "area",
-            "itemStyle": {"borderRadius": 10},
-            "data": [
-                {"value": 40, "name": "rose 1"},
-                {"value": 38, "name": "rose 2"},
-                {"value": 32, "name": "rose 3"},
-                {"value": 30, "name": "rose 4"},
-                {"value": 28, "name": "rose 5"},
-                {"value": 26, "name": "rose 6"},
-                {"value": 22, "name": "rose 7"},
-                {"value": 18, "name": "rose 8"},
-                {"value": 18, "name": "rose 9"},
-                {"value": 18, "name": "rose 10"},
-            ],
-        }
-    ],
-}
-st_echarts(
-    options=by_rider, height="600px",
-)
-
-
-
-# LEFT JOIN WITH PANDAS
-#df_puntos_edadmedia_clasicas = equipos_edad
-
-#df_puntos_edadmedia_clasicas.merge(equipos_puntos, on='Team_Name', how='left')
-
-
-#st.dataframe(df_puntos_edadmedia_clasicas)
-
-# REPRESENTAMOS GRAFICOS
-
-
-#data_top2 = competitionsstats.head()
-
-
-
-#cols_to_check = ['Race_Name','Name','Season','Age','Rank','Team_Name','UCI','Finishing_Time']
-
 

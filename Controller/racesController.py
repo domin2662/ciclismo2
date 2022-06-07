@@ -10,7 +10,7 @@ def get_dataframe_all_race_results():
     # Connect to PostgreSQL server
     dbConnection = alchemyEngine.connect();
     # Read data from PostgreSQL database table and load into a DataFrame instance
-    dataFrame_race_results = pds.read_sql("select * race_results" , dbConnection);
+    dataFrame_race_results = pds.read_sql("select  id_race, id_cyclist, season, age, team_name, uci, rank from race_results" , dbConnection);
     pds.set_option('display.expand_frame_repr', False);
 
     # Print the DataFrame
@@ -23,7 +23,7 @@ def get_dataframe_race_results_classics_team_season(team):
     # Connect to PostgreSQL server
     dbConnection = alchemyEngine.connect();
     # Read data from PostgreSQL database table and load into a DataFrame instance
-    dataFrame_race_results_classics = pds.read_sql("select id_result, id_race, id_cyclist, season, age, team_name, uci, finishing_time, rank from race_results where team_name='"+ team +"'"  , dbConnection);
+    dataFrame_race_results_classics = pds.read_sql("select  id_race, id_cyclist, season, age, team_name, uci, rank from race_results where team_name='"+ team +"'"  , dbConnection);
     pds.set_option('display.expand_frame_repr', False);
     # Print the DataFrame
     # Close the database connection
