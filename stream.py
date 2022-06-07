@@ -393,16 +393,33 @@ st.write("###")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("👨‍👨‍👦‍👦 EDAD EQUIPOS " + str(int(season)))
-    st.bar_chart(equipos_year_age)
-with col2:
+    st.subheader("👨‍👨‍👦‍👦 PUNTOS - CORREDOR : " + str(team).upper())
     teams = rcController.get_dataframe_teams(str(season))
     team_season = rcController.get_dataframe_race_results_classics_team_season(team)
-    team_season = team_season[['id_cyclist','team_name','uci']]
+    team_season = team_season[['id_cyclist', 'team_name', 'uci']]
     team_by_rider = team_season.groupby(['id_cyclist']).sum()
+
+
+    teams = rcController.get_dataframe_teams(str(season))
+    team_season = rcController.get_dataframe_race_results_classics_team_season(team)
+
+    team_by_rider2 = team_season.groupby(['id_cyclist']).sum()
+
+
+    team_by_rider = team_by_rider.sort_values(by="uci", ascending=False)
+    team_by_rider = team_by_rider[:10]
+
+    listado_de_corredores = []
+
+    for index, row in team_by_rider.iterrows():
+        dictionary_to_graph = {"value": row["uci"], "name": index}
+        listado_de_corredores.append(dictionary_to_graph)
     st.write(team_by_rider)
 
-    st.subheader("👨‍👨‍👦‍👦 PUNTOS UCI POR CORREDOR " + str(team))
+with col2:
+
+
+    st.subheader("👨‍👨‍👦‍👦 PUNTOS UCI POR CORREDOR " + str(team).upper())
 
     by_rider = {
         "legend": {"top": "bottom"},
@@ -424,16 +441,17 @@ with col2:
                 "roseType": "area",
                 "itemStyle": {"borderRadius": 10},
                 "data": [
-                    {"value": 40, "name": "rose 1"},
-                    {"value": 38, "name": "rose 2"},
-                    {"value": 32, "name": "rose 3"},
-                    {"value": 30, "name": "rose 4"},
-                    {"value": 28, "name": "rose 5"},
-                    {"value": 26, "name": "rose 6"},
-                    {"value": 22, "name": "rose 7"},
-                    {"value": 18, "name": "rose 8"},
-                    {"value": 18, "name": "rose 9"},
-                    {"value": 18, "name": "rose 10"},
+
+                    {"value": int(team_by_rider.iloc[[0]]['uci']), "name":  str(team_by_rider.iloc[[0]].index)},
+                    {"value": int(team_by_rider.iloc[[1]]['uci']), "name":  str(team_by_rider.iloc[[1]].index)},
+                    {"value": int(team_by_rider.iloc[[2]]['uci']), "name":  str(team_by_rider.iloc[[2]].index)},
+                    {"value": int(team_by_rider.iloc[[3]]['uci']), "name":  str(team_by_rider.iloc[[3]].index)},
+                    {"value": int(team_by_rider.iloc[[4]]['uci']), "name":  str(team_by_rider.iloc[[4]].index)},
+                    {"value": int(team_by_rider.iloc[[5]]['uci']), "name":  str(team_by_rider.iloc[[5]].index)},
+                    {"value": int(team_by_rider.iloc[[6]]['uci']), "name":  str(team_by_rider.iloc[[6]].index)},
+                    {"value": int(team_by_rider.iloc[[7]]['uci']), "name":  str(team_by_rider.iloc[[7]].index)},
+                    {"value": int(team_by_rider.iloc[[8]]['uci']), "name":  str(team_by_rider.iloc[[8]].index)},
+                    {"value": int(team_by_rider.iloc[[9]]['uci']), "name":  str(team_by_rider.iloc[[9]].index)},
                 ],
             }
         ],
@@ -452,17 +470,13 @@ with col2:
 teams = rcController.get_dataframe_teams(str(season))
 team_season = rcController.get_dataframe_race_results_classics_team_season(team)
 
-team_by_rider = team_season.groupby(['id_cyclist']).sum()
+#team_by_rider = team_season.groupby(['id_cyclist']).sum()
+st.write("###")
 
-st.dataframe(team_season)
-st.dataframe(team_by_rider.sort_values(['uci'],False))
+team_by_rider.sort_values(['uci'],False)
 st.bar_chart(team_by_rider)
 
 
 # PUNTOS EN CLÁSICAS
-equipos_puntos = equipos_year.groupby(['Team_Name']).sum()
-equipos_puntos  = equipos_puntos .sort_values('Team_Name', ascending=True, inplace=False, kind='quicksort', na_position='last', ignore_index=False, key=None)
 
-st.dataframe(equipos_puntos)
-st.bar_chart(equipos_puntos)
 
