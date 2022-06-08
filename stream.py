@@ -147,7 +147,7 @@ porcorredortemporadas = riders_by_season.loc[riders_by_season['id_cyclist'].str.
 
 #######  HEADING  #######
 st.markdown('##')
-st.header(' 🙋‍♂️  SELECTED RIDER   ‍♂🙋️')
+st.header(' 🙋‍♂️  SELECTED RIDER   ‍🙋‍♂')
 
 col1, col2, col3 = st.columns(3)
 
@@ -442,16 +442,16 @@ with col2:
                 "itemStyle": {"borderRadius": 10},
                 "data": [
 
-                    {"value": int(team_by_rider.iloc[[0]]['uci']), "name":  str(team_by_rider.iloc[[0]].index)},
-                    {"value": int(team_by_rider.iloc[[1]]['uci']), "name":  str(team_by_rider.iloc[[1]].index)},
-                    {"value": int(team_by_rider.iloc[[2]]['uci']), "name":  str(team_by_rider.iloc[[2]].index)},
-                    {"value": int(team_by_rider.iloc[[3]]['uci']), "name":  str(team_by_rider.iloc[[3]].index)},
-                    {"value": int(team_by_rider.iloc[[4]]['uci']), "name":  str(team_by_rider.iloc[[4]].index)},
-                    {"value": int(team_by_rider.iloc[[5]]['uci']), "name":  str(team_by_rider.iloc[[5]].index)},
-                    {"value": int(team_by_rider.iloc[[6]]['uci']), "name":  str(team_by_rider.iloc[[6]].index)},
-                    {"value": int(team_by_rider.iloc[[7]]['uci']), "name":  str(team_by_rider.iloc[[7]].index)},
-                    {"value": int(team_by_rider.iloc[[8]]['uci']), "name":  str(team_by_rider.iloc[[8]].index)},
-                    {"value": int(team_by_rider.iloc[[9]]['uci']), "name":  str(team_by_rider.iloc[[9]].index)},
+                    {"value": int(team_by_rider.iloc[[0]]['uci']), "name":  str(team_by_rider.iloc[[0]].index).split("'")[1]},
+                    {"value": int(team_by_rider.iloc[[1]]['uci']), "name":  str(team_by_rider.iloc[[1]].index).split("'")[1]},
+                    {"value": int(team_by_rider.iloc[[2]]['uci']), "name":  str(team_by_rider.iloc[[2]].index).split("'")[1]},
+                    {"value": int(team_by_rider.iloc[[3]]['uci']), "name":  str(team_by_rider.iloc[[3]].index).split("'")[1]},
+                    {"value": int(team_by_rider.iloc[[4]]['uci']), "name":  str(team_by_rider.iloc[[4]].index).split("'")[1]},
+                    {"value": int(team_by_rider.iloc[[5]]['uci']), "name":  str(team_by_rider.iloc[[5]].index).split("'")[1]},
+                    {"value": int(team_by_rider.iloc[[6]]['uci']), "name":  str(team_by_rider.iloc[[6]].index).split("'")[1]},
+                    {"value": int(team_by_rider.iloc[[7]]['uci']), "name":  str(team_by_rider.iloc[[7]].index).split("'")[1]},
+                    {"value": int(team_by_rider.iloc[[8]]['uci']), "name":  str(team_by_rider.iloc[[8]].index).split("'")[1]},
+                    {"value": int(team_by_rider.iloc[[9]]['uci']), "name":  str(team_by_rider.iloc[[9]].index).split("'")[1]},
                 ],
             }
         ],
@@ -472,7 +472,8 @@ team_season = rcController.get_dataframe_race_results_classics_team_season(team)
 
 #team_by_rider = team_season.groupby(['id_cyclist']).sum()
 st.write("###")
-
+st.write("###")
+st.subheader("BEST CYCLISTS OFF "+ str(team).upper())
 team_by_rider.sort_values(['uci'],False)
 st.bar_chart(team_by_rider)
 
