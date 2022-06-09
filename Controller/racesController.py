@@ -2,59 +2,57 @@ import pandas as pds
 
 from sqlalchemy import create_engine
 
+import psycopg2
+import streamlit as st
+
+import pandas as pds
+
+from sqlalchemy import create_engine
+
+# Create an engine instance
+
+# Initialize connection.
+# Uses st.experimental_singleton to only run once.
+@st.experimental_singleton
+def init_connection():
+    return psycopg2.connect(**st.secrets["postgres"])
+
+conn = init_connection()
+
+# Perform query.
+# Uses st.experimental_memo to only rerun when the query changes or after 10 min.
+@st.experimental_memo(ttl=600)
+def run_query(query):
+    with conn.cursor() as cur:
+        cur.execute(query)
+        return cur.fetchall()
+
+
+
+
+
 # Create an engine instance
 
 def get_dataframe_all_race_results():
 
-    alchemyEngine = create_engine('postgresql+psycopg2://postgres:openpgpwd@127.0.0.1/cycling', pool_recycle=3600)
-    # Connect to PostgreSQL server
-    dbConnection = alchemyEngine.connect();
-    # Read data from PostgreSQL database table and load into a DataFrame instance
-    dataFrame_race_results = pds.read_sql("select  id_race, id_cyclist, season, age, team_name, uci, rank from race_results" , dbConnection);
+    dataFrame_race_results =pds.read_sql("select  id_race, id_cyclist, season, age, team_name, uci, rank from race_results", conn)
     pds.set_option('display.expand_frame_repr', False);
-
-    # Print the DataFrame
-    # Close the database connection
-    dbConnection.close();
     return dataFrame_race_results
 
 def get_dataframe_race_results_classics_team_season(team):
-    alchemyEngine = create_engine('postgresql+psycopg2://postgres:openpgpwd@127.0.0.1/cycling', pool_recycle=3600)
-    # Connect to PostgreSQL server
-    dbConnection = alchemyEngine.connect();
-    # Read data from PostgreSQL database table and load into a DataFrame instance
-    dataFrame_race_results_classics = pds.read_sql("select  id_race, id_cyclist, season, age, team_name, uci, rank from race_results where team_name='"+ team +"'"  , dbConnection);
+
+    dataFrame_race_results_classics = pds.read_sql( "select  id_race, id_cyclist, season, age, team_name, uci, rank from race_results where team_name='" + team + "'", conn)
     pds.set_option('display.expand_frame_repr', False);
-    # Print the DataFrame
-    # Close the database connection
-    dbConnection.close();
     return dataFrame_race_results_classics
 
 def get_dataframe_season():
-    alchemyEngine = create_engine('postgresql+psycopg2://postgres:openpgpwd@127.0.0.1/cycling', pool_recycle=3600)
-    # Connect to PostgreSQL server
-    dbConnection = alchemyEngine.connect();
-    # Read data from PostgreSQL database table and load into a DataFrame instance
-    dataFrame_season = pds.read_sql(
-        "select DISTINCT season from race_results ORDER BY season ",
-        dbConnection);
+
+    dataFrame_season = pds.read_sql("select DISTINCT season from race_results ORDER BY season ", conn)
     pds.set_option('display.expand_frame_repr', False);
-    # Print the DataFrame
-    # Close the database connection
-    dbConnection.close();
     return dataFrame_season
 
 def get_dataframe_teams(season):
-    alchemyEngine = create_engine('postgresql+psycopg2://postgres:openpgpwd@127.0.0.1/cycling', pool_recycle=3600)
-    # Connect to PostgreSQL server
-    dbConnection = alchemyEngine.connect();
 
-    # Read data from PostgreSQL database table and load into a DataFrame instance
-    dataFrame_teams = pds.read_sql(
-        "select team_name from race_results where season='"+season+"'",
-        dbConnection);
+    dataFrame_teams =pds.read_sql("select team_name from race_results where season='"+season+"'",conn)
     pds.set_option('display.expand_frame_repr', False);
-    # Print the DataFrame
-    # Close the database connection
-    dbConnection.close();
     return  dataFrame_teams

@@ -3,6 +3,7 @@
 # and load into a pandas DataFrame
 
 import psycopg2
+import streamlit as st
 
 import pandas as pds
 

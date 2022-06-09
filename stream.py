@@ -1,10 +1,13 @@
 import numpy as np
 import streamlit as st
+st.set_page_config(layout="wide")
 import altair as alt
 import pandas as pd
 import Controller.cyclistsController as CyController
 import Controller.racesController as rcController
 from streamlit_echarts import st_echarts, st_pyecharts
+
+
 
 #################LOAD INFORMATION CSV ##########################
 
@@ -22,19 +25,21 @@ competitionsstats = rcController.get_dataframe_all_race_results()
 
 
 ###############TITULO##################
-st.set_page_config(layout="wide")
 st.image('bike.jpg')
 ###########  SIDEBAR MENU   ##########
 st.sidebar.title(":bike:CIDEAM CYCLING")
 #typeofcompetition = st.sidebar.radio("Type of Competition", ('climbing', 'general_classification', 'time_trial', 'sprint', 'one_day_races'))
 typeofcompetition  = st.sidebar.multiselect( 'Types of Competitions', ('climbing', 'general_classification', 'time_trial', 'sprint', 'one_day_races'))
 nationality = st.sidebar.selectbox('SELECT A RIDER', nationalities)
+nation = str(nationality)
 rider = st.sidebar.selectbox('SELECT A RIDER', profiles)
 rider2 = st.sidebar.selectbox('SELECT A RIDER TO COMPARE', profiles)
 #multirider = st.sidebar.multiselect('SELECT A RIDER', profiles)
 number_cyclist_selected_historical = st.sidebar.slider("Number of cyclist history",1,30,15)
 number_cyclist_selected = st.sidebar.slider("Number of cyclist",1,200,20)
 season = st.sidebar.selectbox('SELECT A SEASON', seasons)
+
+
 
 # COMBOBOX - TEAMS
 teams = rcController.get_dataframe_teams(str(season))
