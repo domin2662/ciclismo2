@@ -1,5 +1,11 @@
 # # this is needed for local development with docker
-# [server]
+[server]
+
+host = "172.31.8.68"
+port = 5432
+dbname = "cycling"
+user = "postgres"
+password = "hoSW7?0Q-"
 # # if you don't want to start the default browser:
 # headless = true
 # # you will need this for local development:
