@@ -7,7 +7,7 @@ import streamlit as st
 
 import pandas as pds
 
-from sqlalchemy import create_engine
+
 
 # Create an engine instance
 
