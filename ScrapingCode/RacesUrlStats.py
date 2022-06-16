@@ -15,9 +15,7 @@ pd.__version__
 def getsoup(url):
     response = requests.get(url)
     page = response.text
-
     soup = BeautifulSoup(page, 'lxml')
-    #print(soup)
     return soup
 
 

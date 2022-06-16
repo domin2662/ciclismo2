@@ -41,3 +41,6 @@ class Conexion:
 
             cur.execute(insertar,values)
             conn.commit()
+
+        except:
+            pass

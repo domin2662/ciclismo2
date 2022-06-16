@@ -55,7 +55,7 @@ team = st.sidebar.selectbox('SELECT A TEAM', teams)
 # FILTER RESULT WIT POSTGRES
 col1,col2 = st.columns(2)
 with col1:
-    st.header(" 👨‍👨‍👦‍👦 ALL THE CYCLIST - HISTORICAL  👨‍👨‍👦‍👦")
+    st.subheader(" 👨‍👨‍👦‍👦 CYCLISTs - HISTORICAL  👨‍👨‍👦‍👦")
     result= CyController.get_dataframe_cyclist(str(rider))
     st.dataframe(profiles)
     type = np.array(typeofcompetition)
@@ -63,7 +63,7 @@ with col1:
     type.extend(typeofcompetition)
 
 with col2:
-    st.header(" 👨‍👨‍👦‍👦 ALL THE CYCLIST  FROM "+str(nationality).upper())
+    st.subheader(" 👨‍👨‍👦‍👦 CYCLIST  FROM "+str(nationality).upper())
     result = CyController.get_dataframe_cyclist(str(rider))
     porcorredortemporadas = riders_by_season.loc[riders_by_season['id_cyclist'].str.contains(str(rider), case=False)]
     profiles_by_nationality = profiles
@@ -147,7 +147,7 @@ porcorredortemporadas = riders_by_season.loc[riders_by_season['id_cyclist'].str.
 
 #######  HEADING  #######
 st.markdown('##')
-st.header(' 🙋‍♂️  SELECTED RIDER   ‍🙋‍♂')
+st.subheader(' 🙋‍♂️  SELECTED RIDER   ‍🙋‍♂')
 
 col1, col2, col3 = st.columns(3)
 
@@ -249,7 +249,7 @@ with col3:
 
 #######HEADING ##############
 st.markdown('##')
-st.header(' 🙋‍♂️ COMPARE TWO RIDERS  🙋‍♂️')
+
 
 
 ################# COMPARE TWO RIDERS NOT IMPLEMENTED ########################
@@ -298,7 +298,7 @@ st.header(' 🙋‍♂️ COMPARE TWO RIDERS  🙋‍♂️')
 
 #temp = st.sidebar.selectbox('SELECT SEASON', uniqueSeason, 17)
 st.markdown('##')
-st.header(' 📆️ SEASON DATA   📆️ : '+ str(season) )
+st.subheader(' 📆️ SEASON DATA  📆️ : '+ str(season) )
 
 col1, col2 = st.columns(2)
 
@@ -361,11 +361,11 @@ st.altair_chart(f, use_container_width=True)
 #Race_Name,Name,Season,Age,Rank,Team_Name,UCI,Finishing_Time
 col1, col2 = st.columns(2)
 with col1:
-    st.header("👨‍👨‍👦‍👦 RESULTADOS HISTÓRICOS DE CLÁSICAS" )
+    st.subheader("👨‍👨‍👦‍👦 CLASIC RESULTS" )
     st.dataframe(competitionsstats)
 with col2:
     #FILTRAMOS EL EQUIPO -> POR AÑO
-    st.header("👨‍👨‍👦‍👦 ANÁLISIS POR EQUIPOS EN "+ str(int(season)) )
+    st.header("👨‍👨‍👦‍👦 TEAMS IN "+ str(int(season)) )
     equipos_year = competitionsstats.loc[competitionsstats['season'] == season]
     st.write(equipos_year)
     equipos_year_age = equipos_year[['team_name', 'age']]
@@ -383,17 +383,17 @@ st.write("###")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("👨‍👨‍👦‍👦 EDAD EQUIPOS " + str(int(season)))
+    st.subheader("👨‍👨‍👦‍👦 TEAMS AGE " + str(int(season)))
     st.bar_chart(equipos_year_age)
 with col2:
-    st.subheader("👨‍👨‍👦‍👦 PUNTOS UCI CLÁSICAS " + str(int(season)))
+    st.subheader("👨‍👨‍👦‍👦 UCI POINTS " + str(int(season)))
     st.bar_chart(equipos_year_uci)
 
 st.write("###")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("👨‍👨‍👦‍👦 PUNTOS - CORREDOR : " + str(team).upper())
+    st.subheader("👨‍👨‍👦‍👦 POINTS RIDER : " + str(team).upper())
     teams = rcController.get_dataframe_teams(str(season))
     team_season = rcController.get_dataframe_race_results_classics_team_season(team)
     team_season = team_season[['id_cyclist', 'team_name', 'uci']]
@@ -419,7 +419,7 @@ with col1:
 with col2:
 
 
-    st.subheader("👨‍👨‍👦‍👦 PUNTOS UCI POR CORREDOR " + str(team).upper())
+    st.subheader("👨‍👨‍👦‍👦 POINTS/RIDER " + str(team).upper())
 
     by_rider = {
         "legend": {"top": "bottom"},
@@ -473,7 +473,7 @@ team_season = rcController.get_dataframe_race_results_classics_team_season(team)
 #team_by_rider = team_season.groupby(['id_cyclist']).sum()
 st.write("###")
 st.write("###")
-st.subheader("BEST CYCLISTS OFF "+ str(team).upper())
+st.subheader("BEST OFF "+ str(team).upper())
 team_by_rider.sort_values(['uci'],False)
 st.bar_chart(team_by_rider)
 

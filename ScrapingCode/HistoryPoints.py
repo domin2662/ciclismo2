@@ -71,7 +71,7 @@ for rider in URLs.iterrows():
     except IndexError:
         nationality.append('NaN')
 
-print("okey")
+
 climber = []
 gc = []
 tt = []
