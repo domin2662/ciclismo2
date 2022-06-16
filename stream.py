@@ -33,7 +33,7 @@ typeofcompetition  = st.sidebar.multiselect( 'Types of Competitions', ('climbing
 nationality = st.sidebar.selectbox('SELECT A RIDER', nationalities)
 nation = str(nationality)
 rider = st.sidebar.selectbox('SELECT A RIDER', profiles)
-rider2 = st.sidebar.selectbox('SELECT A RIDER TO COMPARE', profiles)
+#rider2 = st.sidebar.selectbox('SELECT A RIDER TO COMPARE', profiles)
 #multirider = st.sidebar.multiselect('SELECT A RIDER', profiles)
 number_cyclist_selected_historical = st.sidebar.slider("Number of cyclist history",1,30,15)
 number_cyclist_selected = st.sidebar.slider("Number of cyclist",1,200,20)
@@ -55,7 +55,7 @@ team = st.sidebar.selectbox('SELECT A TEAM', teams)
 # FILTER RESULT WIT POSTGRES
 col1,col2 = st.columns(2)
 with col1:
-    st.subheader(" 👨‍👨‍👦‍👦 CYCLISTs - HISTORICAL  👨‍👨‍👦‍👦")
+    st.subheader(" 👨‍👨‍👦‍👦 CYCLISTS-HISTORICAL  👨‍👨‍👦‍👦")
     result= CyController.get_dataframe_cyclist(str(rider))
     st.dataframe(profiles)
     type = np.array(typeofcompetition)
@@ -63,7 +63,7 @@ with col1:
     type.extend(typeofcompetition)
 
 with col2:
-    st.subheader(" 👨‍👨‍👦‍👦 CYCLIST  FROM "+str(nationality).upper())
+    st.subheader(" 👨‍👨‍👦‍👦 CYCLISTS  FROM "+str(nationality).upper())
     result = CyController.get_dataframe_cyclist(str(rider))
     porcorredortemporadas = riders_by_season.loc[riders_by_season['id_cyclist'].str.contains(str(rider), case=False)]
     profiles_by_nationality = profiles
@@ -154,7 +154,7 @@ col1, col2, col3 = st.columns(3)
 
 
 with col1:
-    st.subheader("SELECTED : " + str(rider).upper())
+    st.subheader("SELECTED - " + str(rider).upper())
     st.dataframe(result)
     st.write(" ")
     st.write("🙋‍♂ NAME :  " + str(result.iat[0,1]).upper())
@@ -167,7 +167,7 @@ with col1:
 
 
 with col2:
-    st.subheader("POINTS/S " + str(rider).upper())
+    st.subheader("POINTS " + str(rider).upper())
     porcorredortemporadaspoints = porcorredortemporadas.rename(columns={'season': 'index'}).set_index('index')
 
     # chart_data = pd.DataFrame(porcorredortemporadas, columns=['Points', 'Racedays', 'KMs_Rode', 'Wins', 'Top_10s'])
@@ -182,7 +182,7 @@ with col2:
 
 #### GENERATE A RADAR ###############
 with col3:
-    st.subheader("RADAR : " + str(rider).upper())
+    st.subheader("RADAR " + str(rider).upper())
 
     option = {
         "radar": {
@@ -212,7 +212,7 @@ with col3:
     st_echarts(option, height="350px")
 
 with col1:
-    st.subheader("WINS/S " + str(rider).upper())
+    st.subheader("WINS " + str(rider).upper())
     porcorredortemporadas_wins = porcorredortemporadas.rename(columns={'season': 'index'}).set_index('index')
 
     # chart_data = pd.DataFrame(porcorredortemporadas, columns=['Points', 'Racedays', 'KMs_Rode', 'Wins', 'Top_10s'])
@@ -224,7 +224,7 @@ with col1:
     # st.line_chart(porcorredortemporada, width=0, height=0, use_container_width=True)
 
 with col2:
-    st.subheader("TOP_TEN/S " + str(rider).upper())
+    st.subheader("TOP_TENS " + str(rider).upper())
     porcorredortemporadas_toptens = porcorredortemporadas.rename(columns={'season': 'index'}).set_index('index')
 
     # chart_data = pd.DataFrame(porcorredortemporadas, columns=['Points', 'Racedays', 'KMs_Rode', 'Wins', 'Top_10s'])
@@ -237,7 +237,7 @@ with col2:
 
 #### GENERATE A RADAR ###############
 with col3:
-    st.subheader("DAYS : " + str(rider).upper())
+    st.subheader("DAYS " + str(rider).upper())
     porcorredortemporadas_race_days = porcorredortemporadas.rename(columns={'season': 'index'}).set_index('index')
 
     # chart_data = pd.DataFrame(porcorredortemporadas, columns=['Points', 'Racedays', 'KMs_Rode', 'Wins', 'Top_10s'])
@@ -338,7 +338,7 @@ with col2:
 
 
 
-st.subheader("TOP " + str(number_cyclist_selected) +" CYCLIST IN: " + str(int(season)).upper())
+st.subheader("TOP " + str(number_cyclist_selected) +" CYCLISTS IN: " + str(int(season)).upper())
 
 corredoresunatemporadas2 = riders_by_season[riders_by_season['season']==season]
 corredoresunatemporadas2 = corredoresunatemporadas2.sort_values(by='point', ascending=False)
@@ -351,7 +351,7 @@ f = alt.Chart(corredoresunatemporadas2).mark_circle(size= 25).encode( x='point' 
 
 st.altair_chart(c, use_container_width=True)
 
-st.subheader("TOP - NON FILTER WINS" + str(number_cyclist_selected) +" CYCLIST IN: " + str(int(season)).upper())
+st.subheader("TOP " + str(number_cyclist_selected) +" CYCLIST IN: " + str(int(season)).upper())
 
 st.altair_chart(f, use_container_width=True)
 
@@ -361,11 +361,11 @@ st.altair_chart(f, use_container_width=True)
 #Race_Name,Name,Season,Age,Rank,Team_Name,UCI,Finishing_Time
 col1, col2 = st.columns(2)
 with col1:
-    st.subheader("👨‍👨‍👦‍👦 CLASIC RESULTS" )
+    st.subheader(":dart: CLASIC RESULTS" )
     st.dataframe(competitionsstats)
 with col2:
     #FILTRAMOS EL EQUIPO -> POR AÑO
-    st.header("👨‍👨‍👦‍👦 TEAMS IN "+ str(int(season)) )
+    st.subheader("👨‍👨‍👦‍👦 TEAMS IN "+ str(int(season)) )
     equipos_year = competitionsstats.loc[competitionsstats['season'] == season]
     st.write(equipos_year)
     equipos_year_age = equipos_year[['team_name', 'age']]
@@ -383,17 +383,17 @@ st.write("###")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("👨‍👨‍👦‍👦 TEAMS AGE " + str(int(season)))
+    st.subheader(":older_man: TEAMS AGE " + str(int(season)))
     st.bar_chart(equipos_year_age)
 with col2:
-    st.subheader("👨‍👨‍👦‍👦 UCI POINTS " + str(int(season)))
+    st.subheader(":1234: UCI POINTS " + str(int(season)))
     st.bar_chart(equipos_year_uci)
 
 st.write("###")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("👨‍👨‍👦‍👦 POINTS RIDER : " + str(team).upper())
+    st.subheader(":1234: POINTS RIDER : " + str(team).upper())
     teams = rcController.get_dataframe_teams(str(season))
     team_season = rcController.get_dataframe_race_results_classics_team_season(team)
     team_season = team_season[['id_cyclist', 'team_name', 'uci']]
@@ -419,7 +419,7 @@ with col1:
 with col2:
 
 
-    st.subheader("👨‍👨‍👦‍👦 POINTS/RIDER " + str(team).upper())
+    st.subheader(":1234: POINTS/RIDER " + str(team).upper())
 
     by_rider = {
         "legend": {"top": "bottom"},
