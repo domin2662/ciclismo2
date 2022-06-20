@@ -53,6 +53,6 @@ def get_dataframe_season():
 
 def get_dataframe_teams(season):
 
-    dataFrame_teams =pds.read_sql("select team_name from race_results where season='"+season+"'",conn)
+    dataFrame_teams =pds.read_sql("select DISTINCT team_name from race_results where season='"+season+"'",conn)
     pds.set_option('display.expand_frame_repr', False);
     return  dataFrame_teams
