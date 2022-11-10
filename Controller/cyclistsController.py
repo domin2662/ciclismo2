@@ -26,6 +26,7 @@ def run_query(query):
     with conn.cursor() as cur:
         cur.execute(query)
         return cur.fetchall()
+#Test
 
 def get_dataframe_all_cyclists():
     dataFrame_cyclists = pds.read_sql("select * from cyclists",conn);
