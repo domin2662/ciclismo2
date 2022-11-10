@@ -27,6 +27,7 @@ def run_query(query):
         cur.execute(query)
         return cur.fetchall()
 #Test
+#cambio2
 
 def get_dataframe_all_cyclists():
     dataFrame_cyclists = pds.read_sql("select * from cyclists",conn);
