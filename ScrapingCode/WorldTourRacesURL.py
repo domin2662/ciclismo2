@@ -11,7 +11,6 @@ import pprint
 import sqlite3
 pd.__version__
 
-
 def getsoup(url):
     response = requests.get(url)
     page = response.text

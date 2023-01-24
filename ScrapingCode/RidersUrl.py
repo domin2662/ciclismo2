@@ -44,13 +44,12 @@ def get_rider_urls(race_name, year, years_back):
     return urls
 
 
-races = ['gent-wevelgem', 'strade-bianche', 'milano-sanremo',
-         'ronde-van-vlaanderen', 'paris-roubaix', 'omloop-het-nieuwsblad', 'e3-harelbeke']
+races = ['great-ocean-race','strade-bianche','milano-sanremo','omloop-het-nieuwsblad','oxyclean-classic-brugge-de-panne','e3-harelbeke','gent-wevelgem','dwars-door-vlaanderen','ronde-van-vlaanderen','amstel-gold-race','paris-roubaix','la-fleche-wallone','liege-bastogne-liege','Eschborn-Frankfurt','san-sebastian','cyclassics-hamburg','bretagne-classic','gp-quebec','gp-montreal','il-lombardia']
 
-races_22 = ['gent-wevelgem', 'strade-bianche', 'milano-sanremo',
-            'ronde-van-vlaanderen', 'omloop-het-nieuwsblad', 'e3-harelbeke']
+#WE WILL USE THIS ONLY IN THE ACTIVE YEAR
+#races_22 = ['gent-wevelgem', 'strade-bianche', 'milano-sanremo','ronde-van-vlaanderen', 'omloop-het-nieuwsblad', 'e3-harelbeke']
 
-url_list = [get_rider_urls(i, 2022, 13) for i in races]
+url_list = [get_rider_urls(i, 2022, 5) for i in races]
 flat_url = [item for sublist in url_list for subsublist in sublist for item in subsublist]
 
 races_22 = [get_rider_urls(i, 2022, 0) for i in races_22]

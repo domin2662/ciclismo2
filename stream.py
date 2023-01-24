@@ -342,7 +342,7 @@ st.subheader("TOP " + str(number_cyclist_selected) +" CYCLISTS IN: " + str(int(s
 
 corredoresunatemporadas2 = riders_by_season[riders_by_season['season']==season]
 corredoresunatemporadas2 = corredoresunatemporadas2.sort_values(by='point', ascending=False)
-corredoresunatemporadas2= corredoresunatemporadas2.head(number_cyclist_selected)
+corredoresunatemporadas2 = corredoresunatemporadas2.head(number_cyclist_selected)
 
 
 c = alt.Chart(corredoresunatemporadas2).mark_circle().encode( x='point' , y='toptens', size='wins', color='id_cyclist', tooltip=['id_cyclist','point', 'toptens', 'wins'])

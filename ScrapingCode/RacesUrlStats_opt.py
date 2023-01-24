@@ -26,9 +26,10 @@ def get_race_URL(race_name, year, years_back):
 
     return race_URLs
 
-races = ['great-ocean-race','strade-bianche','milano-sanremo','omloop-het-nieuwsblad','oxyclean-classic-brugge-de-panne','e3-harelbeke','gent-wevelgem','dwars-door-vlaanderen','ronde-van-vlaanderen','amstel-gold-race','paris-roubaix','la-fleche-wallone','liege-bastogne-liege','Eschborn-Frankfurt','san-sebastian','cyclassics-hamburg','bretagne-classic','gp-quebec','gp-montreal','il-lombardia']
 
-Race_Names_Pave = [ 'paris-roubaix','strade-bianche', 'milano-sanremo', 'ronde-van-vlaanderen', 'paris-roubaix', 'omloop-het-nieuwsblad', 'e3-harelbeke']
+Race_Names_Pave = ['paris-roubaix','strade-bianche', 'milano-sanremo', 'ronde-van-vlaanderen', 'paris-roubaix', 'omloop-het-nieuwsblad', 'e3-harelbeke']
+races_wt = ['great-ocean-race','strade-bianche','milano-sanremo','omloop-het-nieuwsblad','oxyclean-classic-brugge-de-panne','e3-harelbeke','gent-wevelgem','dwars-door-vlaanderen','ronde-van-vlaanderen','amstel-gold-race','paris-roubaix','la-fleche-wallone','liege-bastogne-liege','Eschborn-Frankfurt','san-sebastian','cyclassics-hamburg','bretagne-classic','gp-quebec','gp-montreal','il-lombardia']
+
 
 
 race_URLs = []
@@ -49,7 +50,7 @@ time = []
 
 
 
-for race in race_URLs[:5]:
+for race in race_URLs[:]:
 
     soup = getsoup(race)
     race_table_tag = soup.find('table', class_='results basic moblist10')
