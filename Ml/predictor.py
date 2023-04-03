@@ -17,14 +17,14 @@ def convert_to_int(value):
     except (ValueError, TypeError):
         return value
 
-'''
-2. Carga los archivos CSV:
-'''
+
+#2. Carga los archivos CSV:
+
 carreras_df = pd.read_csv(r'C:\Users\DOMIN2662\Documents\GitHub\ciclismo2\BBDDcsv\resultadoscon2023.csv')
 info_carreras_df =pd.read_csv(r'C:\Users\DOMIN2662\Documents\GitHub\ciclismo2\BBDDcsv\leaderboard.csv')
-'''
-3. Filtra la columna "Rank" manteniendo solo los valores de tipo integer y float:
-'''
+
+#3. Filtra la columna "Rank" manteniendo solo los valores de tipo integer y float:
+
 
 
 # Convierte la columna de fecha en un objeto de fecha
@@ -44,14 +44,14 @@ print(carreras_df.head())
 carreras_df['Season'] = carreras_df['DATE'].dt.year
 
 
-'''
-3. Combina ambos DataFrames en uno solo utilizando Race_Name como clave:
-'''
+
+#3. Combina ambos DataFrames en uno solo utilizando Race_Name como clave:
+
 df = pd.merge(carreras_df, info_carreras_df, on=['Race_Name','Season'])
 
-'''
-3. Filtra la columna "Rank" manteniendo solo los valores de tipo integer y float:
-'''
+
+# Filtra la columna "Rank" manteniendo solo los valores de tipo integer y float:
+
 
 df['Rank'] = df['Rank'].apply(convert_to_int)
 
@@ -67,17 +67,14 @@ print(df.dtypes)
 print(df.head())
 
 
-'''
-3. Filtra la columna "Rank" manteniendo solo los valores de tipo integer y float:
-'''
 
 
 
 
 
-'''
-4. Prepara los datos para el entrenamiento:
-'''
+
+#4. Prepara los datos para el entrenamiento:
+
 # Filtra solo las columnas relevantes
 X = df[['Season', 'Age', 'Rank', 'Race_ranking', 'Start_list_quality_score', 'Uci_scale', 'Points_scale']]
 y = df['Name']
@@ -89,22 +86,22 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
-'''
-5. Entrena un modelo de clasificación (en este caso, RandomForest):
-'''
+
+# Entrena un modelo de clasificación (en este caso, RandomForest):
+
 clf = RandomForestClassifier(n_estimators=100, random_state=42)
 clf.fit(X_train, y_train)
-'''
 
-6. Evalúa la precisión del modelo:
-python'''
+
+# Evalúa la precisión del modelo:
+
 y_pred = clf.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print(f'Precisión del modelo: {accuracy}')
 
-'''
-7. Predecir el ganador para el próximo año:
-'''
+
+# Predecir el ganador para el próximo año:
+
 next_year = df[df['Season'] == max(df['Season'])+1]
 next_year_X = next_year[['Age', 'Rank', 'Race_ranking', 'Start_list_quality_score', 'Uci_scale', 'Points_scale']]
 next_year_X_scaled = scaler.transform(next_year_X)
@@ -119,7 +116,7 @@ Ten en cuenta que este es un ejemplo básico y hay muchas maneras de mejorar la 
 continua ampliando el modelo e indicame los 10 corredores con más p
 Para obtener los 10 corredores con más posibilidades de ganar la carrera, puedes utilizar la función `predict_proba` para obtener las probabilidades de cada clase y luego ordenar los resultados. Aquí tienes cómo hacerlo:
 
-8. Obtén las probabilidades de cada corredor y selecciona los 10 corredores con más posibilidades:
+:
 '''
 
 next_year_prob = clf.predict_proba(next_year_X_scaled)
@@ -133,5 +130,5 @@ print('Los 10 corredores con más posibilidades de ganar la carrera son:')
 print(top_10)
 
 '''
-Esto te dará un DataFrame con los 10 corredores que tienen más posibilidades de ganar la carrera según el modelo. Ten en cuenta que la precisión del modelo puede no ser alta, por lo que es importante seguir mejorando y ajustando el modelo como se mencionó anteriormente.
+DataFrame con los 10 corredores que tienen más posibilidades de ganar la carrera según el modelo. Ten en cuenta que la precisión del modelo puede no ser alta, por lo que es importante seguir mejorando y ajustando el modelo como se mencionó anteriormente.
 '''
