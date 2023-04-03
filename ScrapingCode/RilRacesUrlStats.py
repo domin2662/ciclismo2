@@ -313,5 +313,5 @@ for e in info_carrera:
 
 Inforace = pd.DataFrame({'Race_Name': race_name2, 'DATE': date ,'Dist': distance,'Vert_meters': vert_meters,'Race_ranking':race_ranking,'Start_list_quality_score':start_list_quality_score,'Uci_scale':uci_scale,'Points_scale':points_scale,'Won_how':won_how,})
 LeaderBoard = pd.DataFrame({'Race_Name': race_name, 'Name': name, 'Season': year, 'Age': age, 'Rank': rank, 'Team_Name': team,'UCI':uci, })
-LeaderBoard.to_csv(r'C:\Users\DOMIN2662\Documents\GitHub\ciclismo2\BBDDcsv\resultadoscon2023.csv', index=False, header=True)
+LeaderBoard.to_csv(r'C:\Users\DOMIN2662\Documents\GitHub\ciclismo2\BBDDcsv\leaderboard.csv', index=False, header=True)
 Inforace.to_csv(r'C:\Users\DOMIN2662\Documents\GitHub\ciclismo2\BBDDcsv\resultadoscon2023.csv', index=False, header=True)
